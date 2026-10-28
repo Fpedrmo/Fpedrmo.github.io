@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ferran Pedrero — Projects</title>
+<meta name="description" content="Analytics, automation and research projects by Ferran Pedrero.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbfaf7; --surface: #ffffff; --text: #1d1d1b; --muted: #66645e;
+    --line: #e4e1d9; --accent: #1f5f8b; --tag: #eef2f5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141517; --surface: #1c1e21; --text: #ecebe7; --muted: #a3a19b;
+      --line: #2e3034; --accent: #7fb6dd; --tag: #232a31;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141517; --surface: #1c1e21; --text: #ecebe7; --muted: #a3a19b;
+    --line: #2e3034; --accent: #7fb6dd; --tag: #232a31;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.6 Inter, system-ui, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 64px 16px 80px; }
+  h1 { font: 600 2.4rem/1.15 "Source Serif 4", Georgia, serif; margin: 0 0 12px; letter-spacing: -0.01em; }
+  .intro { color: var(--muted); margin: 0 0 16px; max-width: 60ch; }
+  .links a { color: var(--accent); text-decoration: none; margin-right: 18px; font-weight: 500; }
+  .links a:hover { text-decoration: underline; }
+  h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+    font-weight: 600; margin: 56px 0 16px; }
+  .project { background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 24px; margin-bottom: 16px; }
+  .meta { color: var(--muted); font-size: .85rem; margin-bottom: 4px; }
+  .project h3 { font: 600 1.35rem/1.3 "Source Serif 4", Georgia, serif; margin: 0 0 10px; }
+  .project p { margin: 0 0 10px; }
+  .result { border-left: 3px solid var(--accent); padding-left: 12px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
+  .tags li { background: var(--tag); border-radius: 4px; padding: 2px 8px; font-size: .8rem; }
+  .project .more { margin-top: 14px; font-size: .9rem; }
+  .project .more a { color: var(--accent); margin-right: 16px; }
+  footer { color: var(--muted); font-size: .85rem; margin-top: 56px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <h1>Ferran Pedrero</h1>
+    <p class="intro">Commercial analytics at Volkswagen Financial Services by day. On the side I build
+      research tools, automations and small AI systems, mostly in Python, with Claude Code as a pair.
+      These are the ones worth writing up.</p>
+    <nav class="links">
+      <a href="https://www.linkedin.com/in/ferran-pedrero">LinkedIn</a>
+    </nav>
+  </header>
+
+  <h2>Projects</h2>
+  <section id="projects"></section>
+
+  <footer>Updated <span id="updated"></span></footer>
+</main>
+
+<script>
+// Add new projects at the top. Fields: title, period, summary, result, stack[], post (LinkedIn URL), repo.
+const UPDATED = "2026-10";
+const PROJECTS = [
+  {
+    title: "Killing a trading strategy with a rule written in advance",
+    period: "Sep – Oct 2026",
+    summary: "Event-driven backtesting engine in Python to test the opening range breakout on Nasdaq futures, " +
+      "judged against six pass/fail criteria fixed before looking at any result.",
+    result: "Passed five of six criteria (1,015 sessions, Sharpe 0.93, permutation test p = 0.011) but the sign " +
+      "flipped when the range window moved 15 minutes. Retired, as the rule said.",
+    stack: ["Python", "pandas", "NumPy", "pytest", "Permutation testing", "Claude Code"],
+    post: "",
+    repo: ""
+  }
+];
+
+const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text) n.textContent = text; return n; };
+const root = document.getElementById("projects");
+for (const p of PROJECTS) {
+  const card = el("article", "project");
+  card.append(el("div", "meta", p.period), el("h3", null, p.title), el("p", null, p.summary), el("p", "result", p.result));
+  const tags = el("ul", "tags");
+  p.stack.forEach(s => tags.append(el("li", null, s)));
+  card.append(tags);
+  if (p.post || p.repo) {
+    const more = el("div", "more");
+    if (p.post) { const a = el("a", null, "LinkedIn post"); a.href = p.post; more.append(a); }
+    if (p.repo) { const a = el("a", null, "Code"); a.href = p.repo; more.append(a); }
+    card.append(more);
+  }
+  root.append(card);
+}
+document.getElementById("updated").textContent = UPDATED;
+</script>
+</body>
+</html>
